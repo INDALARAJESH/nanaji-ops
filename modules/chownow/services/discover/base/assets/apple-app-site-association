@@ -1,0 +1,17 @@
+{
+   "applinks": {
+      "apps": [],
+      "details": [
+         {
+            "appID": "B5A97UB9Q7.com.ChowNow.Marketplace",
+            "paths": [
+               "/a/*"
+            ]
+         },
+         {
+            "appID": "iterable",
+            "paths": [“*”]
+         }
+      ]
+   }
+}

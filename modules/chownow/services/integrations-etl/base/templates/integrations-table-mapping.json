@@ -1,0 +1,128 @@
+{
+  "rules": [
+    {
+      "rule-type": "selection",
+      "rule-id": "1",
+      "rule-name": "all",
+      "object-locator": {
+          "schema-name": "%",
+          "table-name": "%"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "2",
+      "rule-name": "exclude_accounts_accesstoken_token",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "accounts_accesstoken",
+        "column-name": "token"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "3",
+      "rule-name": "exclude_django",
+      "object-locator": {
+          "schema-name": "%",
+          "table-name": "django_%"
+      },
+      "rule-action": "exclude"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "4",
+      "rule-name": "exclude_auth",
+      "object-locator": {
+          "schema-name": "%",
+          "table-name": "auth_%"
+      },
+      "rule-action": "exclude"
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "5",
+      "rule-name": "exclude_base_user_password_column",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "base_user",
+        "column-name": "password"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "6",
+      "rule-name": "exclude_accounts_application_client_id",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "accounts_application",
+        "column-name": "client_id"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "7",
+      "rule-name": "exclude_accounts_application_client_secret",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "accounts_application",
+        "column-name": "client_secret"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "8",
+      "rule-name": "exclude_accounts_refreshtoken_token",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "accounts_refreshtoken",
+        "column-name": "token"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "9",
+      "rule-name": "exclude_accounts_grant",
+      "object-locator": {
+          "schema-name": "%",
+          "table-name": "accounts_grant"
+      },
+      "rule-action": "exclude"
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "10",
+      "rule-name": "exclude_accounts_auditlog_data",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "%",
+        "table-name": "accounts_auditlog",
+        "column-name": "data"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    }
+  ]
+}

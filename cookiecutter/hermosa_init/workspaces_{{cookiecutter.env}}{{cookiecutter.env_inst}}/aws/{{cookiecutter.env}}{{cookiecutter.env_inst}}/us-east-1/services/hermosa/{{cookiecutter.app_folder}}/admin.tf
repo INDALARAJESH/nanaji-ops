@@ -1,0 +1,26 @@
+module "admin" {
+  source                         = "git::git@github.com:ChowNow/ops-tf-modules.git//modules/chownow/services/hermosa/ecs-api?ref={{cookiecutter.api_module_ref}}"
+  env                            = var.env
+  env_inst                       = var.env_inst
+  service                        = var.service
+  service_id                     = "admin"
+  deployment_suffix              = var.deployment_suffix
+  alb_name                       = local.alb_name_admin
+  cluster_name                   = local.cluster_name
+  alb_hostnames                  = [local.admin_alb_hostname]
+  cloudflare_hostnames           = [local.admin_cloudflare_hostname]
+  vpc_name                       = var.vpc_name
+  listener_rule_priority         = 5
+  wait_for_steady_state          = var.wait_for_steady_state
+  configuration_secret_arn       = module.configuration.configuration_secret_arn
+  ssl_key_secret_arn             = module.configuration.ssl_key_secret_arn
+  ssl_cert_secret_arn            = module.configuration.ssl_cert_secret_arn
+  web_ecr_repository_uri         = var.web_ecr_repository_uri
+  web_container_image_version    = var.web_container_image_version
+  api_ecr_repository_uri         = var.api_ecr_repository_uri
+  api_container_image_version    = var.api_container_image_version
+  manage_ecr_repository_uri      = var.api_ecr_repository_uri
+  manage_container_image_version = var.api_container_image_version
+  web_ecs_service_desired_count  = var.web_ecs_service_desired_count
+  ops_config_version             = var.ops_config_version
+}

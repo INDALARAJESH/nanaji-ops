@@ -1,0 +1,34 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Action": [
+                "logs:PutLogEvents",
+                "logs:Create*"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Sid": "secrets",
+            "Effect": "Allow",
+            "Action": [
+              "secretsmanager:GetSecretValue",
+              "kms:Decrypt"
+            ],
+            "Resource": "arn:aws:secretsmanager:${region}:${account_id}:secret:${env}/${service}/*"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+module "api" {
+  source                         = "git::git@github.com:ChowNow/ops-tf-modules.git//modules/chownow/services/hermosa/ecs-api?ref=cn-hermosa-ecs-api-v2.3.3"
+  env                            = var.env
+  env_inst                       = var.env_inst
+  service                        = var.service
+  service_id                     = "api"
+  alb_name                       = local.alb_name
+  cluster_name                   = local.cluster_name
+  alb_hostnames                  = var.alb_hostnames
+  listener_rule_priority         = null
+  wait_for_steady_state          = var.wait_for_steady_state
+  ssl_key_secret_arn             = data.aws_secretsmanager_secret_version.ssl_key.secret_id
+  ssl_cert_secret_arn            = data.aws_secretsmanager_secret_version.ssl_cert.secret_id
+  configuration_secret_arn       = data.aws_secretsmanager_secret_version.configuration.secret_id
+  web_ecr_repository_uri         = var.web_ecr_repository_uri
+  web_container_image_version    = var.web_container_image_version
+  api_ecr_repository_uri         = var.api_ecr_repository_uri
+  api_container_image_version    = var.api_container_image_version
+  manage_ecr_repository_uri      = var.api_ecr_repository_uri
+  manage_container_image_version = var.api_container_image_version
+  web_ecs_service_desired_count  = var.web_ecs_service_desired_count
+  ops_config_version             = var.ops_config_version
+}

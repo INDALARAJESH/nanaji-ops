@@ -1,0 +1,121 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:DescribeAvailabilityZones",
+				"ec2:DescribeSecurityGroups",
+				"ec2:DescribeSubnets",
+				"rds:AddTagsToResource"
+			],
+			"Resource": "*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "iam:PassRole",
+			"Resource": "arn:aws:iam::${account_id}:role/${role_name_with_path}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"rds:CopyDBClusterParameterGroup",
+				"rds:ModifyDBCluster",
+				"rds:RestoreDBClusterFromSnapshot"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:cluster-pg:${source_cluster_parameter_group_name}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"rds:CopyDBClusterParameterGroup",
+				"rds:ModifyDBCluster",
+				"rds:RestoreDBClusterFromSnapshot",
+				"rds:ModifyDBClusterParameterGroup"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:cluster-pg:${target_cluster_parameter_group_name}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"rds:DescribeDBClusterSnapshots",
+				"rds:RestoreDBClusterFromSnapshot"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:cluster-snapshot:rds:${source_cluster_snapshot_name}"
+		},
+    {
+			"Effect": "Allow",
+			"Action": [
+				"rds:CreateDBClusterSnapshot",
+				"rds:DeleteDBCluster",
+				"rds:DescribeDBClusterSnapshots",
+				"rds:ModifyDBClusterSnapshotAttribute",
+				"rds:RestoreDBClusterFromSnapshot"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:cluster-snapshot:${target_cluster_snapshot_name}"
+		},
+    {
+			"Effect": "Allow",
+			"Action": [
+        		"rds:DescribeDBClusterSnapshots",
+				"rds:DescribeDBClusters"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:cluster:${source_db_cluster_instance_name}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"rds:DescribeDBClusterSnapshots",
+				"rds:CreateDBClusterSnapshot",
+				"rds:DeleteDBCluster",
+				"rds:DescribeDBClusters",
+				"rds:ModifyDBCluster",
+				"rds:RestoreDBClusterFromSnapshot",
+				"rds:CreateDBInstance",
+				"rds:DeleteDBInstance",
+				"rds:DescribeDBInstances",
+				"rds:ModifyDBInstance"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:cluster:${target_db_cluster_instance_name}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"rds:CreateDBInstance",
+				"rds:DeleteDBInstance",
+				"rds:DescribeDBInstances",
+				"rds:ModifyDBInstance"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:db:${target_db_instance_name}"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"rds:ModifyDBCluster",
+				"rds:ModifyDBInstance",
+				"rds:RestoreDBClusterFromSnapshot"
+			],
+			"Resource": "arn:aws:rds:${region}:${account_id}:og:*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "rds:ModifyDBInstance",
+			"Resource": "arn:aws:rds:${region}:${account_id}:pg:*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "rds:ModifyDBInstance",
+			"Resource": "arn:aws:rds:${region}:${account_id}:secgrp:*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "rds:DescribeDBSnapshots",
+			"Resource": "arn:aws:rds:${region}:${account_id}:snapshot:*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "rds:RestoreDBClusterFromSnapshot",
+			"Resource": "arn:aws:rds:${region}:${account_id}:subgrp:*"
+		}
+	]
+}

@@ -1,0 +1,5 @@
+{
+  "environment": "dev",
+  "service_name": "acm",
+  "aws_account_id": "229179723177"
+}

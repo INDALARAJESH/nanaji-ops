@@ -1,0 +1,144 @@
+{
+  "rules": [
+    {
+      "rule-type": "selection",
+      "rule-id": "1",
+      "rule-name": "1",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "address"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "2",
+      "rule-name": "2",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "3",
+      "rule-name": "3",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_company"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "4",
+      "rule-name": "4",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_category"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "5",
+      "rule-name": "5",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_delivery_area"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "6",
+      "rule-name": "6",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_media"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "7",
+      "rule-name": "7",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_temporary_closure"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "8",
+      "rule-name": "8",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_marketplace_live"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "9",
+      "rule-name": "9",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_region"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "10",
+      "rule-name": "10",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_status"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "11",
+      "rule-name": "11",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_restaurant_category"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "12",
+      "rule-name": "12",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "delivery_hour"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "13",
+      "rule-name": "13",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "cn_day"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "14",
+      "rule-name": "14",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "restaurant_discount"
+      },
+      "rule-action": "include"
+    }
+  ]
+}

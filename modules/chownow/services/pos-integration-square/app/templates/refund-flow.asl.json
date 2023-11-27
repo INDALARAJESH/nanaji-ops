@@ -1,0 +1,119 @@
+{
+    "Comment": "A state machine that handles the refunds from Hermosa.",
+    "StartAt": "PassFlowType",
+    "States": {
+        "PassFlowType": {
+            "Type": "Pass",
+            "Result": "REFUND",
+            "ResultPath": "$.flow_type",
+            "Next": "ChoiceRefundFlow"
+        },
+        "ChoiceRefundFlow": {
+            "Type": "Choice",
+            "Choices": [
+                {
+                    "Variable": "$.is_full_refund",
+                    "BooleanEquals": true,
+                    "Next": "PerformFullRefund"
+                },
+                {
+                    "Variable": "$.is_full_refund",
+                    "BooleanEquals": false,
+                    "Next": "PerformPartialRefund"
+                }
+            ]
+        },
+        "PerformPartialRefund": {
+            "Type": "Task",
+            "Resource": "${PerformPartialRefund}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "ConnectionError", "Timeout"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 5
+                },
+                {
+                    "ErrorEquals": [
+                        "OperationalError"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "UpdateOrderInDatabase"
+        },
+        "PerformFullRefund": {
+            "Type": "Task",
+            "Resource": "${PerformFullRefund}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "ConnectionError", "Timeout"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 5
+                },
+                {
+                    "ErrorEquals": [
+                        "OperationalError"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "UpdateOrderInDatabase"
+        },
+        "UpdateOrderInDatabase": {
+            "Type": "Task",
+            "Resource": "${UpdateOrderInDatabase}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "OperationalError"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "End": true
+        },
+        "SendSlackNotification": {
+            "Type": "Task",
+            "Resource": "${SendSlackNotification}",
+            "Parameters": {
+                "flow_type.$": "$.flow_type",
+                "cn_order_id.$": "$.order_id",
+                "restaurant_id.$": "$.pos_restaurant.restaurant_id",
+                "error.$": "$.error"
+            },
+            "Next": "RefundFlowFailed"
+        },
+        "RefundFlowFailed": {
+            "Type": "Fail",
+            "Cause": "An error occurred in refund flow",
+            "Error": "Hermosa refund flow stepfunction error"
+        }
+    }
+}

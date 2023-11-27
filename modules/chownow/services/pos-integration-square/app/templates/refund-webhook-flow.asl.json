@@ -1,0 +1,46 @@
+{
+    "Comment": "A state machine that handles webhook refund.",
+    "StartAt": "PassFlowType",
+    "States": {
+        "PassFlowType": {
+            "Type": "Pass",
+            "Result": "REFUND_WEBHOOK",
+            "ResultPath": "$.flow_type",
+            "Next": "PerformWebhookRefund"
+        },
+        "PerformWebhookRefund": {
+            "Type": "Task",
+            "Resource": "${PerformWebhookRefund}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "OperationalError"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "End": true
+        },
+        "SendSlackNotification": {
+            "Type": "Task",
+            "Resource": "${SendSlackNotification}",
+            "Parameters": {
+                "flow_type.$": "$.flow_type",
+                "error.$": "$.error"
+            },
+            "Next": "WebhookFlowFailed"
+        },
+        "WebhookFlowFailed": {
+            "Type": "Fail",
+            "Cause": "An error occurred in webhook flow",
+            "Error": "Webhook flow stepfunction error"
+        }
+    }
+}

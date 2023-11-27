@@ -1,0 +1,155 @@
+[
+    {
+        "name": "${service}",
+        "image": "${image_repository}:${version}",
+        "entryPoint": [
+          "/bin/bash",
+          "bin/entrypoint.sh"
+        ],
+        "cpu": 0,
+        "portMappings": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "command": [
+            "ddtrace-run",
+            "python",
+            "-m",
+            "${app_name}.scrub",
+            "--my_db",
+            "${target_db}"
+        ],
+        "essential": true,
+        "logConfiguration": {
+            "logDriver": "awsfirelens",
+            "options": {
+                "Name": "datadog",
+                "Host": "http-intake.logs.datadoghq.com",
+                "dd_service": "${service}",
+                "dd_source": "fargate",
+                "dd_tags": "env:${env},service:${service},version:${version}",
+                "TLS": "on",
+                "provider": "ecs"
+            },
+            "secretOptions": [
+                {
+                    "name": "apikey",
+                    "valueFrom": "${dd_api_key_secret_arn}"
+                }
+            ]
+        },
+        "environment": [
+            {
+                "name": "ENV",
+                "value": "${env}"
+            },
+            {
+                "name": "App",
+                "value": "data-redaction"
+            },
+            {
+                "name": "DD_ENV",
+                "value": "${env}"
+            },
+            {
+                "name": "DD_SERVICE",
+                "value": "${service}"
+            },
+            {
+                "name": "DD_VERSION",
+                "value": "${version}"
+            }
+        ],
+        "dockerLabels": {
+            "com.datadoghq.tags.env": "${env}",
+            "com.datadoghq.tags.service": "${service}",
+            "com.datadoghq.tags.version": "${version}"
+        }
+    },
+    {
+        "name": "datadog-agent",
+        "image": "public.ecr.aws/datadog/agent:latest",
+        "essential": true,
+        "cpu": 256,
+        "memory": 256,
+        "mountPoints": [],
+        "volumesFrom": [],
+        "secrets": [
+            {
+                "name": "DD_API_KEY",
+                "valueFrom": "${dd_api_key_secret_arn}"
+            }
+        ],
+        "portMappings": [
+            {
+                "hostPort": 8126,
+                "protocol": "tcp",
+                "containerPort": 8126
+            }
+        ],
+        "environment": [
+            {
+                "name": "DD_APM_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_APM_NON_LOCAL_TRAFFIC",
+                "value": "true"
+            },
+            {
+                "name": "ECS_FARGATE",
+                "value": "true"
+            },
+            {
+                "name": "ECS_ENABLE_CONTAINER_METADATA",
+                "value": "true"
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awsfirelens",
+            "options": {
+                "Name": "datadog",
+                "Host": "http-intake.logs.datadoghq.com",
+                "dd_service": "${service}",
+                "dd_source": "fargate",
+                "dd_tags": "env:${env},service:${service},version:${version},cn_namespace:${service}",
+                "TLS": "on",
+                "provider": "ecs"
+            },
+            "secretOptions": [
+                {
+                    "name": "apikey",
+                    "valueFrom": "${dd_api_key_secret_arn}"
+                }
+            ]
+        }
+    },
+    {
+        "name": "log_router",
+        "image": "public.ecr.aws/aws-observability/aws-for-fluent-bit:stable",
+        "firelensConfiguration": {
+            "type": "fluentbit",
+            "options": {
+                "enable-ecs-log-metadata": "true",
+                "config-file-type": "file",
+                "config-file-value": "/fluent-bit/configs/minimize-log-loss.conf"
+            }
+        },
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-region": "${region}",
+                "awslogs-stream-prefix": "${service}-datadog-logs-${env}",
+                "awslogs-group": "${service}-logs",
+                "awslogs-create-group": "true"
+            }
+        },
+        "essential": true,
+        "memoryReservation": 50,
+        "cpu": 0,
+        "portMappings": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "environment": [],
+        "user": "0"
+    }
+]

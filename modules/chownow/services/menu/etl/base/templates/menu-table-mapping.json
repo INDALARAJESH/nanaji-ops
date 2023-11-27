@@ -1,0 +1,133 @@
+{
+  "rules": [
+    {
+        "rule-type": "selection",
+        "rule-id": "1",
+        "rule-name": "1",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "cn_option"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "2",
+        "rule-name": "2",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "cn_option_category"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "3",
+        "rule-name": "3",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "cn_option_type"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "4",
+        "rule-name": "4",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "5",
+        "rule-name": "5",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu_category"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "6",
+        "rule-name": "6",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu_entity_visibility"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "7",
+        "rule-name": "7",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu_entry"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "8",
+        "rule-name": "8",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu_item"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "9",
+        "rule-name": "9",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu_item_category"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "10",
+        "rule-name": "10",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu_item_image"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "11",
+        "rule-name": "11",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "menu_item_option_category"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "12",
+        "rule-name": "12",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "restaurant_menu_schedule"
+        },
+        "rule-action": "include"
+    },
+    {
+        "rule-type": "selection",
+        "rule-id": "13",
+        "rule-name": "13",
+        "object-locator": {
+            "schema-name": "${schema_name}",
+            "table-name": "serving_size"
+        },
+        "rule-action": "include"
+    }
+]}

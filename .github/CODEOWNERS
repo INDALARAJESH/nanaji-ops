@@ -1,0 +1,38 @@
+# Global Owners DevOps
+*                                                   @ChowNow/devops
+
+# Pantry Ops Reviewers
+
+/.github/                                           @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/aws/                                       @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/datadog/                                   @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/launchdarkly/                              @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/aws/                               @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/launchdarkly/                      @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/alb-ecs-cluster/          @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/api-lambda/               @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/api-lambda-dynamodb/      @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/backstage/                @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/api-lambda-dynamodb/      @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/data-redaction/           @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/hermosa/                  @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/lambda/                   @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/loyalty/                  @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/rest-api-gateway/         @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/rest-api-lambda/          @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/rest-api-lambda-dynamodb/ @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+/modules/chownow/services/rest-api-lambda/          @ChowNow/devops @ChowNow/the-pantry-ops-reviewers
+
+
+# Grilled Cheese Reviewers
+
+/modules/chownow/services/pos-integration-toast/    @ChowNow/devops @ChowNow/pb-j
+
+# Counter Ops Reviewers
+
+/modules/chownow/services/menu/                     @ChowNow/devops @ChowNow/the-counter-ops-reviewers
+
+# Kitchen Ops Reviewers
+
+/modules/chownow/services/onboarding/               @ChowNow/devops @ChowNow/the-kitchen-ops-reviewers
+/modules/chownow/services/user-privacy/             @ChowNow/devops @ChowNow/the-kitchen-ops-reviewers

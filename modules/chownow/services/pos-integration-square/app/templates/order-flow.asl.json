@@ -1,0 +1,185 @@
+{
+    "Comment": "A state machine that handles the order flow.",
+    "StartAt": "PassFlowType",
+    "States": {
+        "PassFlowType": {
+            "Type": "Pass",
+            "Result": "ORDER",
+            "ResultPath": "$.flow_type",
+            "Next": "SaveOrderToTheDatabase"
+        },
+        "SaveOrderToTheDatabase": {
+            "Type": "Task",
+            "Resource": "${SaveOrderToTheDatabase}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "OperationalError"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "MapCNItemsToPOSVendorItems"
+        },
+        "MapCNItemsToPOSVendorItems": {
+            "Type": "Task",
+            "Resource": "${MapCNItemsToPOSVendorItems}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "OperationalError"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "CreatePOSOrderObject"
+        },
+        "CreatePOSOrderObject": {
+            "Type": "Task",
+            "Resource": "${CreatePOSOrderObject}",
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "SendOrderToPOSVendor"
+        },
+        "SendOrderToPOSVendor": {
+            "Type": "Task",
+            "Resource": "${SendOrderToPOSVendor}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "ConnectionError", "Timeout"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 5
+                }
+            ],
+            "Catch": [
+                {
+                    "ErrorEquals": [ "OrderMappingError" ],
+                    "Next": "ClearOrderMappings",
+                    "ResultPath": "$.error"
+                },
+                {
+                    "ErrorEquals": [ "States.ALL" ],
+                    "Next": "SendSlackNotification",
+                    "ResultPath": "$.error"
+                }
+            ],
+            "Next": "CreatePOSPaymentObject"
+        },
+        "ClearOrderMappings": {
+            "Type": "Task",
+            "Resource": "${ClearOrderMappings}",
+            "Next": "CreatePOSOrderObject"
+        },
+        "CreatePOSPaymentObject": {
+            "Type": "Task",
+            "Resource": "${CreatePOSPaymentObject}",
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "SendPaymentToPOSVendor"
+        },
+        "SendPaymentToPOSVendor": {
+            "Type": "Task",
+            "Resource": "${SendPaymentToPOSVendor}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "ConnectionError", "Timeout"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 5
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "UpdateOrderInDatabase"
+        },
+        "UpdateOrderInDatabase": {
+            "Type": "Task",
+            "Resource": "${UpdateOrderInDatabase}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "OperationalError"
+                    ],
+                    "IntervalSeconds": 5,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Catch": [{
+                "ErrorEquals": [ "States.ALL" ],
+                "Next": "SendSlackNotification",
+                "ResultPath": "$.error"
+            }],
+            "Next": "SendInfoToSuccessQueue"
+        },
+        "SendInfoToSuccessQueue": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::sqs:sendMessage",
+            "Parameters": {
+                "QueueUrl": "${SuccessQueueUrl}",
+                "MessageBody": {
+                    "cn_order_id.$": "$.cn_order.cn_order_id",
+                    "status": "SUCCESS"
+                 }
+            },
+            "End": true
+        },
+        "SendInfoToFailureQueue": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::sqs:sendMessage",
+            "Parameters": {
+                "QueueUrl": "${FailureQueueUrl}",
+                "MessageBody": {
+                    "cn_order_id.$": "$.cn_order_id",
+                    "error.$": "$.error",
+                    "status": "FAILURE"
+                 }
+            },
+            "Next": "OrderFlowFailed"
+        },
+        "SendSlackNotification": {
+            "Type": "Task",
+            "Resource": "${SendSlackNotification}",
+            "Parameters": {
+                "flow_type.$": "$.flow_type",
+                "cn_order_id.$": "$.cn_order.cn_order_id",
+                "restaurant_id.$": "$.pos_restaurant.restaurant_id",
+                "error.$": "$.error"
+            },
+            "Next": "SendInfoToFailureQueue"
+        },
+        "OrderFlowFailed": {
+            "Type": "Fail",
+            "Cause": "An error occurred in order flow",
+            "Error": "Order flow stepfunction error"
+        }
+    }
+}

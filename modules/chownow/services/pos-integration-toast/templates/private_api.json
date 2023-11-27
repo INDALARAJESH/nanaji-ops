@@ -1,0 +1,560 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0",
+        "title": "pos_toast_private_api"
+    },
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/v1/health": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "202": {
+                        "description": "202 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "summary": "Toast Private API Healthcheck",
+                "description": "Healthcheck endpoint for private API for Toast integration."
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${get-restaurant-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "summary": "Get restaurant details",
+                "description": "Retrieves the toast integration details for a restaurant"
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${patch-restaurant-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "summary": "Patch restaurant details",
+                "description": "Authorizes the toast integration details for a restaurant"
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/locations": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${get-restaurant-locations-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "summary": "Get restaurants locations details",
+                "description": "Retrieves the toast integration details for a restaurant locations"
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseTemplates": {
+                                "application/json": "{}"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "httpMethod": "POST",
+                    "type": "mock"
+                },
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "summary": "select restaurant location",
+                "description": "Selects a location from a list of available ones (mocked)"
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/integration-errors": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${get-restaurant-errors-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "summary": "Get restaurants integration error details",
+                "description": "Retrieves the toast integration error details for a restaurant location"
+            }
+        },
+        "/v1/auth/authorization-url": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${post-authorization-url-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "summary": "Post authorization url",
+                "description": "Although this is a POST method, it does not modify any state or data.  It is simply in place to mimic the interface for the Square integration."
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/orders": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${post-order-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Send order to Toast",
+                "description": "Forwards order to Toast",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/order_prices": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${get-order-prices-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Get Toast prices data",
+                "description": "Calls Toast prices endpoint and returns tax data to Hermosa",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        }
+      },
+    "definitions": {
+        "Empty": {
+            "type": "object",
+            "title": "Empty Schema"
+        }
+    },
+    "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "x-api-key",
+            "in": "header"
+        }
+    }
+}
+

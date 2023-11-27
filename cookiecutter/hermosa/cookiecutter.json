@@ -1,0 +1,15 @@
+{
+  "module": "ecs-standalone",
+  "module_ref": "hermosa-ecs-standalone-v2.0.14",
+  "environment": "dev",
+  "environment_instance": "",
+  "service_name": "hermosa-ep",
+  "service_path": "hermosa-ephemeral",
+  "alb_name_prefix": "on-demand-pub",
+  "cluster_name_prefix": "on-demand",
+  "alb_hostnames": "admin-ep.dev.svpn.chownow.com",
+  "aws_account_id": "229179723177",
+  "hermosa_web_image_tag": "v1.1.4",
+  "hermosa_api_image_tag": "release-hermosa-2023-01-31-40735ef53",
+  "hermosa_task_image_tag": "release-hermosa-2023-01-31-40735ef53"
+}

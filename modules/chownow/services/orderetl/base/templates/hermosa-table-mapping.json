@@ -1,0 +1,675 @@
+{
+    "rules": [{
+        "rule-type": "transformation",
+        "rule-id": "1",
+        "rule-name": "1",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "bad_email",
+          "column-name": "email_address"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "2",
+        "rule-name": "2",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "bad_email",
+          "column-name": "email_info"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "3",
+        "rule-name": "3",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "billing_information",
+          "column-name": "card_number"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "4",
+        "rule-name": "4",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "billing_information",
+          "column-name": "cardholder_name"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "5",
+        "rule-name": "5",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "billing_information",
+          "column-name": "authnet_payment_profile_id"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "6",
+        "rule-name": "6",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "customer",
+          "column-name": "authnet_customer_profile_id"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "7",
+        "rule-name": "7",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "disbursement",
+          "column-name": "disbursement_data"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "8",
+        "rule-name": "8",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "mma_disbursement",
+          "column-name": "disbursement_data"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "9",
+        "rule-name": "9",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "oauth_consumer",
+          "column-name": "token"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "10",
+        "rule-name": "10",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "oauth_consumer",
+          "column-name": "secret"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "11",
+        "rule-name": "11",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "oauth_token",
+          "column-name": "token"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "12",
+        "rule-name": "12",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "oauth_token",
+          "column-name": "secret"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "13",
+        "rule-name": "13",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "oauth_token_data",
+          "column-name": "token_value"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "14",
+        "rule-name": "14",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "order_payment",
+          "column-name": "authnet_transaction_id"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "15",
+        "rule-name": "15",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "payment_processor_info",
+          "column-name": "response"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "16",
+        "rule-name": "16",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant",
+          "column-name": "payment_routing"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "17",
+        "rule-name": "17",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant",
+          "column-name": "payment_account"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "18",
+        "rule-name": "18",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_ar",
+          "column-name": "account_data"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "19",
+        "rule-name": "19",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_company_push_notif_cert",
+          "column-name": "certificate"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "20",
+        "rule-name": "20",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "tin"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "21",
+        "rule-name": "21",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "routing"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "22",
+        "rule-name": "22",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "account"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "23",
+        "rule-name": "23",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "account_iv"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "24",
+        "rule-name": "24",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "rep_fname"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "25",
+        "rule-name": "25",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "rep_lname"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "26",
+        "rule-name": "26",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "rep_email"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "27",
+        "rule-name": "27",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "rep_phone"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "28",
+        "rule-name": "28",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "rep_dob"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "29",
+        "rule-name": "29",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_disburse_to",
+          "column-name": "rep_ssn_iv"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "30",
+        "rule-name": "30",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_payment",
+          "column-name": "transaction_response"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "31",
+        "rule-name": "31",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_payment_source",
+          "column-name": "tin"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "32",
+        "rule-name": "32",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_payment_source",
+          "column-name": "routing"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "33",
+        "rule-name": "33",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurant_payment_source",
+          "column-name": "account"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "34",
+        "rule-name": "34",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "user_forgot_password",
+          "column-name": "unique_key"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "35",
+        "rule-name": "35",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "user",
+          "column-name": "salt"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "36",
+        "rule-name": "36",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "user",
+          "column-name": "password"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "37",
+        "rule-name": "37",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "pos_restaurant",
+          "column-name": "_access_token"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "38",
+        "rule-name": "38",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "pos_restaurant",
+          "column-name": "_refresh_token"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "39",
+        "rule-name": "39",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "pos_restaurant",
+          "column-name": "token_expiration"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "40",
+        "rule-name": "40",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "%"
+        },
+        "rule-action": "include",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "41",
+        "rule-name": "41",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "audit"
+        },
+        "rule-action": "include",
+        "filters": [
+         {
+          "filter-type": "source",
+          "column-name": "table_name",
+          "filter-conditions": [
+           {
+            "filter-operator": "eq",
+            "value": "menu_item"
+           },
+           {
+            "filter-operator": "eq",
+            "value": "cn_option_category"
+           }
+          ]
+         }
+        ]
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "42",
+        "rule-name": "42",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "device_token"
+        },
+        "rule-action": "exclude",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "43",
+        "rule-name": "43",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "customer_apple_login"
+        },
+        "rule-action": "exclude",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "44",
+        "rule-name": "44",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "registration_session"
+        },
+        "rule-action": "exclude",
+        "filters": []
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "45",
+        "rule-name": "45",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "customer_stripe_payment",
+          "column-name": "payment_method_xid"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "46",
+        "rule-name": "46",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "pos_restaurant",
+          "column-name": "location_id"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "47",
+        "rule-name": "47",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "pos_restaurant",
+          "column-name": "merchant_id"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      },
+      {
+        "rule-type": "transformation",
+        "rule-id": "48",
+        "rule-name": "48",
+        "rule-target": "column",
+        "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "tablet_device_token",
+          "column-name": "token"
+        },
+        "rule-action": "remove-column",
+        "value": null,
+        "old-value": null
+      }
+    ]
+  }

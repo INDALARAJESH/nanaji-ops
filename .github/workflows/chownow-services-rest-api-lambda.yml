@@ -1,0 +1,36 @@
+name: chownow-services-rest-api-lambda
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+    - 'modules/chownow/services/rest-api-lambda/**'
+
+env:
+  TF_VERSION: 0.14.4
+
+defaults:
+  run:
+    working-directory: modules/chownow/services/rest-api-lambda
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+
+    - name: Terraform Version
+      id: version
+      run: terraform version
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check

@@ -1,0 +1,40 @@
+name: aws-ec2-mongodb
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+    - 'modules/aws/ec2/mongodb/**'
+
+env:
+  TF_VERSION: 0.14.11
+
+defaults:
+  run:
+    working-directory: modules/aws/ec2/mongodb
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+
+    - name: Terraform Version
+      id: version
+      run: terraform version
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
+
+    - name: Terraform Init
+      id: init
+      run: terraform init

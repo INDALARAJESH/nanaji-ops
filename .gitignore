@@ -1,0 +1,10 @@
+cloudfrontmodifyresponse-sec-headers.zip
+.DS_Store
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
+
+# IDEs
+.idea/**
+.vscode

@@ -1,0 +1,92 @@
+{
+  "rules": [
+    {
+      "rule-type": "selection",
+      "rule-id": "1",
+      "rule-name": "include_table_orders_delivery",
+      "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "orders_delivery"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "2",
+      "rule-name": "include_table_orders_order",
+      "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "orders_order"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "3",
+      "rule-name": "include_table_providers_provider",
+      "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "providers_provider"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "4",
+      "rule-name": "exclude_providers_provider_credentials",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "providers_provider",
+        "column-name": "credentials"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    },
+    {
+      "rule-type": "transformation",
+      "rule-id": "5",
+      "rule-name": "exclude_providers_provider_api_key",
+      "rule-target": "column",
+      "object-locator": {
+        "schema-name": "${schema_name}",
+        "table-name": "providers_provider",
+        "column-name": "api_key"
+      },
+      "rule-action": "remove-column",
+      "value": null,
+      "old-value": null
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "6",
+      "rule-name": "include_table_providers_zone",
+      "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "providers_zone"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "7",
+      "rule-name": "include_table_restaurants_restaurant",
+      "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurants_restaurant"
+      },
+      "rule-action": "include"
+    },
+    {
+      "rule-type": "selection",
+      "rule-id": "8",
+      "rule-name": "include_table_restaurants_eligibility",
+      "object-locator": {
+          "schema-name": "${schema_name}",
+          "table-name": "restaurants_eligibility"
+      },
+      "rule-action": "include"
+    }
+  ]
+}

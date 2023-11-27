@@ -1,0 +1,1589 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0",
+        "title": "pos_square"
+    },
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/v1/auth/authorization-url": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Get authorization URL to POS vendor",
+                "description": "Endpoint accepts `company_id` and `restaurant_id` in body and generate POS vendor's authorization URL\n which is used to redirect a user to the POS login page\n\nEndpoint also returns additional data about restaurant if the restaurant was registered before.\n\nEndpoint returns error when:\n - *422* - if a restaurant_id or company_id are not provided",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/auth/callback": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "POS vendor callback public endpoint.",
+                "description": "Endpoint is used as a callback from the POS vendor's login page. It obtains user's access token and save restaurant\ninformation in the database.\n\nEndpoint returns always 302 status code with `Location` header with `success` parameter in the url.\n\nEndpoint returns `success=true` if, the data from query params will be valid and endpoint will\nobtain the access token from POS vendor.\n\nEndpoint returns `success=false` if:\n    - data from query params will not be valid\n    - something went wrong during obtaining the token"
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/locations": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Get a list of available POS locations",
+                "description": "Endpoint returns a list of available locations from POS vendor for provided `restaurant_id`\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Save selected POS location",
+                "description": "Endpoint saves selected POS location for given restaurant by providing `restaurant_id`\n\nEndpoint accepts `location_id` and `cn_restaurant_name` in the payload.\n\nEndpoint also allows to unlink location by sending `null` as `location_id`\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *422* - incorrect data in the payload was provided\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/menu": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Get POS menu and mapped items",
+                "description": "Endpoint returns object with lists of items from POS and currently matched items for provided `restaurant_id`.\n\nEndpoint accepts `sync` param. Ad default it fetches items from the cache.\nIf you would like to refresh data in the cache, you have to send a request with `sync=true` query param\n\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *400* - provided query params are incorrect\n    - *404* - provided restaurant doesn't exist\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/menu-mapping": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Save CN and POS item's mapping",
+                "description": "Endpoint allows to save, modify, delete item's mapping for chose CN and POS item's ids.\nEndpoint saves and updates POS item id for selected CN item id. If you would\nlike to remove linking for selected CN id, you have to provide `pos_id` as `none`\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *422* - incorrect data in the payload was provided\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'PUT,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/order-statuses": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Delete list of statuses from the SQS queue",
+                "description": "Endpoint allows to delete messages with order statuses from the selected AWS SQS queue.\nEndpoint accept a list of receipt handles received from GET: /v1/restaurants/order-statuses endpoint.\nThis endpoint should be called after processing messages from GET: /v1/restaurants/order-statuses endpoint.\n\nEndpoint returns error when:\n    - *400* - provided query params are incorrect\n    - *422* - incorrect data in the payload was provided\n    - *424* - something went wrong during sending request to the AWS SQS API",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Get order statuses from selected SQS queue",
+                "description": "Endpoint allows to fetch processed order statuses from selected SQS queue by providing a `queue` query parameter.\nEndpoint also accept a `limit` query parameter to define a number of returned objects\n\n`visibility_timeout` - Immediately after a message is received, it remains in the queue.\nTo prevent other consumers from processing the message again,\nAmazon SQS sets a visibility timeout, a period of time during which Amazon SQS prevents other consumers\nfrom receiving and processing the message. The default visibility timeout for a message is 30 seconds.\nAfter processing the message, the service should remove message using endpoint DELETE: /v1/restaurants/order-statuses endpoint.\nMore in: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html\n\nEndpoint returns error when:\n    - *400* - provided query params are incorrect\n    - *424* - something went wrong during sending request to the AWS SQS API",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/orders": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Send order to the POS vendor",
+                "description": "Endpoint allows to submit an order to the POS vendor for selected restaurant.\n\nEndpoint validates and trigger AWS Stepfunctions flow for the provided order's data.\n\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *409* - order data with provided cn_order_id exists in the database\n    - *422* - incorrect data in the payload was provided\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/refresh-token": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Refresh an access token",
+                "description": "Endpoint allows to refresh expired access token for POS vendor's API using saved `refresh_token` in the database\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *403* - `refresh_token` doesn't exist in the database for selected restaurant\n    - *404* - provided restaurant doesn't exist\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/refund-order": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Perform refund for selected order",
+                "description": "Endpoint allows to perform full or partial refund for selected order.\n\nTo do a full refund for the order, you have to send a request with\nfulfilled `order_id` and `is_full_refund` as `true`\n\nTo do a partial refund you have to send a request with fulfilled `order_id`, `is_full_refund` as `false`,\nand provide `refund_amount`.\n\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *422* - incorrect data in the payload was provided\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Create a new restaurant or update the existing one",
+                "description": "Endpoint allows to create a new Restaurant object, when the restaurant already\nexists, it updates the existing one.\n\nEndpoint returns error when:\n    - *422* - incorrect data in the payload was provided\n    - *424* - something went wrong during sending request to the POS vendor's API",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}/revoke": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Revoke the restaurant's access token",
+                "description": "Endpoint revoke the access token(if possible) in POS vendor's api and cleans related data with token in db.\nIt doesn't delete the a restaurant's entry in the database\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/restaurants/{restaurant_id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Get information about the restaurant",
+                "description": "Endpoint returns information about restaurant. It fetches detailed information using POS vendor's API\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Update information about the restaurant",
+                "description": "Endpoint allows to update information about restaurant. Currently, only `is_ordering_enabled`.\nOn the success, it returns detailed information using POS vendor's API\n\nEndpoint returns error when:\n    - *401* - provided restaurant isn't authorized or the access token is expired\n    - *404* - provided restaurant doesn't exist\n    - *422* - incorrect data in the payload was provided\n    - *424* - something went wrong during sending request to the POS vendor's API\n    - *429* - exceeded limit for external API requests",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "restaurant_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,PATCH,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/v1/webhook/refund-order": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Handle refund event from POS vendor's webhook",
+                "description": "Endpoint is used to handling refund events from the POS vendor.\nFor Square webhooks, endpoint requires signature as a header which is validating.\nEndpoint always returns `success` status code. If something will go wrong, it logs error.\nMore in: https://developer.squareup.com/docs/webhooks/overview"
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/validate-sf-execution": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "summary": "Get order's stepfunctions execution status",
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        },
+        "/docs": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200"
+                        }
+                    },
+                    "uri": "${api-lambda-invoke-arn}",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "contentHandling": "CONVERT_TO_TEXT",
+                    "type": "aws_proxy"
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "options": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        },
+                        "headers": {
+                            "Access-Control-Allow-Methods": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Origin": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Headers": {
+                                "type": "string"
+                            },
+                            "Access-Control-Allow-Credentials": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'",
+                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "type": "mock",
+                    "contentHandling": "CONVERT_TO_TEXT"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Empty": {
+            "type": "object",
+            "title": "Empty Schema"
+        }
+    },
+    "x-amazon-apigateway-binary-media-types": [
+        "application/octet-stream",
+        "application/x-tar",
+        "application/zip",
+        "audio/basic",
+        "audio/ogg",
+        "audio/mp4",
+        "audio/mpeg",
+        "audio/wav",
+        "audio/webm",
+        "image/png",
+        "image/jpg",
+        "image/jpeg",
+        "image/gif",
+        "video/ogg",
+        "video/mpeg",
+        "video/webm"
+    ],
+    "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "x-api-key",
+            "in": "header"
+        }
+    }
+}

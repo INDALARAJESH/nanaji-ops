@@ -1,0 +1,163 @@
+[
+  {
+    "essential": true,
+    "name": "${name}",
+    "image": "${container_image_uri}",
+    "cpu": 0,
+    "mountPoints": [],
+    "portMappings": [],
+    "volumesFrom": [],
+    "logConfiguration": {
+      "logDriver": "awsfirelens",
+      "options": {
+        "Name": "datadog",
+        "Host": "${lc_options_dd_host}",
+        "TLS": "on",
+        "dd_service": "${lc_service}",
+        "dd_source": "fargate",
+        "dd_tags": "${lc_options_dd_tags}",
+        "provider": "ecs"
+      },
+      "secretOptions": [
+        {
+          "name": "apikey",
+          "valueFrom": "${lc_apikey_arn}"
+        }
+      ]
+    },
+    "entrypoint": [ "python3"],
+    "command": [ "${container_command}" ],
+    "environment": [
+      {
+        "name": "PYTHONPATH",
+        "value": "."
+      },
+      {
+        "name": "DEBUG",
+        "value": "${DEBUG}"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "${LOG_LEVEL}"
+      },
+      {
+        "name": "ENV",
+        "value": "${ENV}"
+      },
+      {
+        "name": "DB_DETAILS_ARN_SECRET_KEY",
+        "value": "${DB_DETAILS_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "HMAC_SIGNATURE_KEY_ARN_SECRET_KEY",
+        "value": "${HMAC_SIGNATURE_KEY_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "REDIS_CACHE_PASSWORD_ARN_SECRET_KEY",
+        "value": "${REDIS_CACHE_PASSWORD_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "REDIS_CACHE_HOST",
+        "value": "${REDIS_CACHE_HOST}"
+      },
+      {
+        "name": "KMS_ARN_AND_KEY_ID",
+        "value": "${KMS_ARN_AND_KEY_ID}"
+      },
+      {
+        "name": "MOCKED_POS_VENDOR_API",
+        "value": "${MOCKED_POS_VENDOR_API}"
+      },
+      {
+        "name": "POS_VENDOR_IS_SANDBOX",
+        "value": "${POS_VENDOR_IS_SANDBOX}"
+      },
+      {
+        "name": "POS_VENDOR_API_URL",
+        "value": "${POS_VENDOR_API_URL}"
+      },
+      {
+        "name": "POS_VENDOR_OAUTH_CLIENT_ID",
+        "value": "${POS_VENDOR_OAUTH_CLIENT_ID}"
+      },
+      {
+        "name": "POS_VENDOR_OAUTH_CLIENT_SECRET_ARN_SECRET_KEY",
+        "value": "${POS_VENDOR_OAUTH_CLIENT_SECRET_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "SENTRY_URL_ARN_SECRET_KEY",
+        "value": "${SENTRY_URL_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "SF_API_PASSWORD_ARN_SECRET_KEY",
+        "value": "${SF_API_PASSWORD_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "SF_API_SECURITY_TOKEN_ARN_SECRET_KEY",
+        "value": "${SF_API_SECURITY_TOKEN_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "POS_VENDOR_WEBHOOK_SIGNATURE_KEY_ARN_SECRET_KEY",
+        "value": "${POS_VENDOR_WEBHOOK_SIGNATURE_KEY_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "SF_API_IS_SANDBOX",
+        "value": "${SF_API_IS_SANDBOX}"
+      },
+      {
+        "name": "SF_API_USERNAME",
+        "value": "${SF_API_USERNAME}"
+      },
+      {
+        "name": "HERMOSA_DASHBOARD_URL",
+        "value": "${HERMOSA_DASHBOARD_URL}"
+      },
+      {
+        "name": "STEAKS_WEBHOOK_URL_ARN_SECRET_KEY",
+        "value": "${STEAKS_WEBHOOK_URL_ARN_SECRET_KEY}"
+      },
+      {
+        "name": "METRICS_IS_ENABLED",
+        "value": "${METRICS_IS_ENABLED}"
+      },
+      {
+        "name": "METRICS_SERVICE_NAME",
+        "value": "${METRICS_SERVICE_NAME}"
+      }
+    ],
+    "dependsOn": [
+      {
+        "containerName": "${log_container_name}",
+        "condition": "START"
+      }
+    ]
+  },
+  {
+    "essential": true,
+    "name": "${log_container_name}",
+    "image": "${log_image_repo}",
+    "cpu": 0,
+    "mountPoints": [],
+    "portMappings": [],
+    "volumesFrom": [],
+    "user": "0",
+    "environment": [],
+    "firelensConfiguration": {
+      "type": "fluentbit",
+      "options": {
+        "enable-ecs-log-metadata": "true",
+        "config-file-type": "file",
+        "config-file-value": "/fluent-bit/configs/minimize-log-loss.conf"
+      }
+    },
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${cwlogs_name}",
+        "awslogs-region": "${cwlogs_region}",
+        "awslogs-stream-prefix": "${cwlogs_prefix}"
+      }
+    },
+    "memoryReservation": 50
+  }
+]
